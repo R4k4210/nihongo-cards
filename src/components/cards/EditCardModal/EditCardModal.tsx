@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button, Modal, SFormGroup, SInput, SLabel, SModalActions, SSelect } from '~/components/common';
 import { CARD_TYPE_CONFIG } from '~/constants';
 import { CARD_TYPES, Card, CardType } from '~/types';
+import { normalizeImageUrl } from '~/utils/images';
 
 interface EditCardModalProps {
   card: Card | null;
@@ -19,6 +20,7 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
   const [meaning, setMeaning] = useState('');
   const [example, setExample] = useState('');
   const [note, setNote] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     if (card) {
@@ -28,6 +30,7 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
       setMeaning(card.meaning);
       setExample(card.example || '');
       setNote(card.note || '');
+      setImageUrl(card.imageUrl || '');
     }
   }, [card]);
 
@@ -40,6 +43,7 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
       meaning: meaning.trim(),
       example: example.trim() || undefined,
       note: note.trim() || undefined,
+      imageUrl: normalizeImageUrl(imageUrl) || undefined,
     });
     onClose();
   };
@@ -80,6 +84,16 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
       <SFormGroup style={{ marginBottom: '1rem' }}>
         <SLabel htmlFor='edit-note'>Nota</SLabel>
         <SInput id='edit-note' value={note} onChange={(e) => setNote(e.target.value)} />
+      </SFormGroup>
+
+      <SFormGroup style={{ marginBottom: '1rem' }}>
+        <SLabel htmlFor='edit-image'>Imagen URL</SLabel>
+        <SInput
+          id='edit-image'
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+          placeholder='https://i.imgur.com/...'
+        />
       </SFormGroup>
 
       <SModalActions>

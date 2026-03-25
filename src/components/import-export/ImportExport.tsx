@@ -56,17 +56,21 @@ export function ImportExport() {
 
   return (
     <SSection>
-      <STitle>Importar / Exportar</STitle>
+      <STitle>Respaldo de datos</STitle>
+      <p style={{ color: '#6c6c7e', fontSize: '0.875rem', marginBottom: '1rem' }}>
+        Tus cards se guardan en el navegador. Si borrás los datos del navegador, se pierden. Hacé un respaldo para no
+        perderlas.
+      </p>
       <SActions>
         <Button variant='secondary' onClick={handleExport}>
-          Exportar JSON
+          Descargar respaldo
         </Button>
         <Button variant='secondary' onClick={() => fileInputRef.current?.click()}>
-          Importar JSON
+          Restaurar respaldo
         </Button>
         <SHiddenInput ref={fileInputRef} type='file' accept='.json' onChange={handleImport} />
         <Button variant='danger' onClick={handleClearAll}>
-          Borrar Todo
+          Borrar todo
         </Button>
       </SActions>
     </SSection>

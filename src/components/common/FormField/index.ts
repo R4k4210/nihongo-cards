@@ -1,1 +1,1 @@
-export { SFormGroup, SLabel, SInput, SSelect, SHint } from './FormField.styles';
+export { SFormGroup, SLabel, SInput, STextarea, SSelect, SHint } from './FormField.styles';

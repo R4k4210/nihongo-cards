@@ -1,7 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Button, Modal, SFormGroup, SInput, SLabel, SModalActions, SSelect, STextarea } from '~/components/common';
+import {
+  Button,
+  Modal,
+  SFormGroup,
+  SInput,
+  SLabel,
+  SModalActions,
+  SSelect,
+  STextarea,
+  TagInput,
+} from '~/components/common';
 import { CARD_TYPE_CONFIG } from '~/constants';
 import { CARD_TYPES, Card, CardType } from '~/types';
 import { normalizeImageUrl } from '~/utils/images';
@@ -21,6 +31,7 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
   const [example, setExample] = useState('');
   const [note, setNote] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
     if (card) {
@@ -31,6 +42,7 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
       setExample(card.example || '');
       setNote(card.note || '');
       setImageUrl(card.imageUrl || '');
+      setTags(card.tags || []);
     }
   }, [card]);
 
@@ -44,6 +56,7 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
       example: example.trim() || undefined,
       note: note.trim() || undefined,
       imageUrl: normalizeImageUrl(imageUrl) || undefined,
+      tags,
     });
     onClose();
   };
@@ -84,6 +97,11 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
       <SFormGroup style={{ marginBottom: '1rem' }}>
         <SLabel htmlFor='edit-note'>Nota</SLabel>
         <STextarea id='edit-note' value={note} onChange={(e) => setNote(e.target.value)} rows={2} />
+      </SFormGroup>
+
+      <SFormGroup style={{ marginBottom: '1rem' }}>
+        <SLabel>Tags</SLabel>
+        <TagInput tags={tags} onChange={setTags} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Button, Modal, SFormGroup, SInput, SLabel, SModalActions, SSelect } from '~/components/common';
+import { Button, Modal, SFormGroup, SInput, SLabel, SModalActions, SSelect, STextarea } from '~/components/common';
 import { CARD_TYPE_CONFIG } from '~/constants';
 import { CARD_TYPES, Card, CardType } from '~/types';
 import { normalizeImageUrl } from '~/utils/images';
@@ -73,17 +73,17 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
         <SLabel htmlFor='edit-meaning'>Significado</SLabel>
-        <SInput id='edit-meaning' value={meaning} onChange={(e) => setMeaning(e.target.value)} />
+        <STextarea id='edit-meaning' value={meaning} onChange={(e) => setMeaning(e.target.value)} rows={2} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
         <SLabel htmlFor='edit-example'>Ejemplo</SLabel>
-        <SInput id='edit-example' value={example} onChange={(e) => setExample(e.target.value)} />
+        <STextarea id='edit-example' value={example} onChange={(e) => setExample(e.target.value)} rows={2} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
         <SLabel htmlFor='edit-note'>Nota</SLabel>
-        <SInput id='edit-note' value={note} onChange={(e) => setNote(e.target.value)} />
+        <STextarea id='edit-note' value={note} onChange={(e) => setNote(e.target.value)} rows={2} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>

@@ -1,7 +1,8 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { SNav, SNavButton } from './Navigation.styles';
+import { GearIcon } from '~/components/common/Icons';
+import { SNav, SNavButton, SSettingsButton } from './Navigation.styles';
 
 const routes = [
   { path: '/create', label: 'Crear' },
@@ -20,6 +21,9 @@ export function Navigation() {
           {route.label}
         </SNavButton>
       ))}
+      <SSettingsButton $active={pathname === '/settings'} onClick={() => router.push('/settings')} aria-label='Ajustes'>
+        <GearIcon size={36} />
+      </SSettingsButton>
     </SNav>
   );
 }

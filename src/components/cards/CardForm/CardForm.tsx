@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import Image from 'next/image';
-import { Button, SFormGroup, SHint, SInput, SLabel, SSelect, TypeBadge } from '~/components/common';
+import { Button, SFormGroup, SHint, SInput, SLabel, SSelect, STextarea, TypeBadge } from '~/components/common';
 import { RubyText } from '~/components/ruby';
 import { CARD_TYPE_CONFIG } from '~/constants';
 import { useCardForm } from '~/hooks/useCardForm';
@@ -96,42 +96,6 @@ export function CardForm({
         </SFormGroup>
 
         <SFormGroup>
-          <SLabel htmlFor='input-meaning'>Significado</SLabel>
-          <SInput
-            id='input-meaning'
-            value={form.meaning}
-            onChange={(e) => updateField('meaning', e.target.value)}
-            placeholder='Presentación, introducción'
-            maxLength={100}
-          />
-          <SHint>Traducción o significado</SHint>
-        </SFormGroup>
-
-        <SFormGroup>
-          <SLabel htmlFor='input-example'>Ejemplo (opcional)</SLabel>
-          <SInput
-            id='input-example'
-            value={form.example || ''}
-            onChange={(e) => updateField('example', e.target.value)}
-            placeholder='自己紹介をする'
-            maxLength={100}
-          />
-          <SHint>Oración de ejemplo</SHint>
-        </SFormGroup>
-
-        <SFormGroup>
-          <SLabel htmlFor='input-note'>Nota (opcional)</SLabel>
-          <SInput
-            id='input-note'
-            value={form.note || ''}
-            onChange={(e) => updateField('note', e.target.value)}
-            placeholder='JLPT N4'
-            maxLength={100}
-          />
-          <SHint>Info adicional</SHint>
-        </SFormGroup>
-
-        <SFormGroup>
           <SLabel htmlFor='input-image'>Imagen URL (opcional)</SLabel>
           <SInput
             id='input-image'
@@ -141,6 +105,47 @@ export function CardForm({
             maxLength={500}
           />
           <SHint>Pega el link de la imagen</SHint>
+        </SFormGroup>
+      </SFormGrid>
+
+      <SFormGrid>
+        <SFormGroup>
+          <SLabel htmlFor='input-meaning'>Significado</SLabel>
+          <STextarea
+            id='input-meaning'
+            value={form.meaning}
+            onChange={(e) => updateField('meaning', e.target.value)}
+            placeholder='Presentación, introducción'
+            maxLength={200}
+            rows={2}
+          />
+          <SHint>Traducción o significado</SHint>
+        </SFormGroup>
+
+        <SFormGroup>
+          <SLabel htmlFor='input-example'>Ejemplo (opcional)</SLabel>
+          <STextarea
+            id='input-example'
+            value={form.example || ''}
+            onChange={(e) => updateField('example', e.target.value)}
+            placeholder='自己紹介をする'
+            maxLength={200}
+            rows={2}
+          />
+          <SHint>Oración de ejemplo</SHint>
+        </SFormGroup>
+
+        <SFormGroup>
+          <SLabel htmlFor='input-note'>Nota (opcional)</SLabel>
+          <STextarea
+            id='input-note'
+            value={form.note || ''}
+            onChange={(e) => updateField('note', e.target.value)}
+            placeholder='JLPT N4'
+            maxLength={200}
+            rows={2}
+          />
+          <SHint>Info adicional</SHint>
         </SFormGroup>
       </SFormGrid>
 
@@ -168,9 +173,6 @@ export function CardForm({
           <SPreviewCard $variant='front'>
             <SPreviewLabel>Front (pregunta)</SPreviewLabel>
             <SPreviewBox $variant='front'>
-              <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
-                <TypeBadge type={form.type} />
-              </div>
               <span
                 style={{
                   fontFamily: "'Noto Sans JP', sans-serif",

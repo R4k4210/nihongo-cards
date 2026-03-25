@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 export const SNav = styled.nav`
   display: flex;
+  align-items: center;
   gap: 0.5rem;
 
   @media (max-width: 480px) {
@@ -11,14 +12,32 @@ export const SNav = styled.nav`
   }
 `;
 
+export const SSettingsButton = styled.button<{ $active?: boolean }>`
+  padding: 0.6rem 0.6rem 0.6rem 0.2rem;
+  border: none;
+  background: transparent;
+  color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.textMuted)};
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.accent};
+  }
+`;
+
 export const SNavButton = styled.button<{ $active?: boolean }>`
-  padding: 0.6rem 1.25rem;
+  padding: 0.55rem 1rem;
   border: 1px solid ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.border)};
   background: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.bgCard)};
   color: ${({ $active, theme }) => ($active ? 'white' : theme.colors.textSecondary)};
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 500;
   transition: all 0.2s ease;
   font-family: inherit;

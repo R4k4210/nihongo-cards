@@ -137,10 +137,10 @@ export function CardForm({
             id='input-image'
             value={form.imageUrl || ''}
             onChange={(e) => updateField('imageUrl', e.target.value)}
-            placeholder='https://i.imgur.com/abc123.png'
+            placeholder='https://ejemplo.com/imagen.png'
             maxLength={500}
           />
-          <SHint>Pegá el link de imgur o URL directa a la imagen</SHint>
+          <SHint>Pega el link de la imagen</SHint>
         </SFormGroup>
       </SFormGrid>
 

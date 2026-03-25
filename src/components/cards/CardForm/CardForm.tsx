@@ -1,10 +1,13 @@
 'use client';
 
+import { useMemo } from 'react';
+import Image from 'next/image';
 import { Button, SFormGroup, SHint, SInput, SLabel, SSelect, TypeBadge } from '~/components/common';
 import { RubyText } from '~/components/ruby';
 import { CARD_TYPE_CONFIG } from '~/constants';
 import { useCardForm } from '~/hooks/useCardForm';
 import { CARD_TYPES, CardType, CreateCardInput } from '~/types';
+import { normalizeImageUrl } from '~/utils/images';
 import {
   SFuriganaHelper,
   SFuriganaHelperTitle,
@@ -45,6 +48,7 @@ export function CardForm({
   };
 
   const showFuriganaHelper = form.kanji.trim() && form.furigana.trim();
+  const normalizedImageUrl = useMemo(() => normalizeImageUrl(form.imageUrl || ''), [form.imageUrl]);
 
   return (
     <SSection>
@@ -126,6 +130,18 @@ export function CardForm({
           />
           <SHint>Info adicional</SHint>
         </SFormGroup>
+
+        <SFormGroup>
+          <SLabel htmlFor='input-image'>Imagen URL (opcional)</SLabel>
+          <SInput
+            id='input-image'
+            value={form.imageUrl || ''}
+            onChange={(e) => updateField('imageUrl', e.target.value)}
+            placeholder='https://ejemplo.com/imagen.png'
+            maxLength={500}
+          />
+          <SHint>Pega el link de la imagen</SHint>
+        </SFormGroup>
       </SFormGrid>
 
       {showFuriganaHelper && (
@@ -182,6 +198,16 @@ export function CardForm({
               )}
               {form.note && (
                 <div style={{ fontSize: '0.8rem', color: '#6c6c7e', textAlign: 'center' }}>{form.note}</div>
+              )}
+              {normalizedImageUrl && (
+                <Image
+                  src={normalizedImageUrl}
+                  alt='Preview'
+                  width={120}
+                  height={60}
+                  style={{ objectFit: 'contain', borderRadius: '8px' }}
+                  unoptimized
+                />
               )}
             </SPreviewBox>
           </SPreviewCard>

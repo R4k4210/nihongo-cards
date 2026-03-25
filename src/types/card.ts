@@ -33,5 +33,6 @@ export interface CreateCardInput {
   meaning: string;
   example?: string;
   note?: string;
+  imageUrl?: string;
   tags?: string[];
 }

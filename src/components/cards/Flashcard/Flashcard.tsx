@@ -9,6 +9,7 @@ import {
   SBack,
   SBadgePosition,
   SCardActions,
+  SCardImage,
   SDetail,
   SFlashcard,
   SFlashcardInner,
@@ -64,6 +65,7 @@ export function Flashcard({ card, onEdit, onDelete }: FlashcardProps) {
           <SMeaning>{card.meaning}</SMeaning>
           {card.example && <SDetail>{card.example}</SDetail>}
           {card.note && <SDetail>{card.note}</SDetail>}
+          {card.imageUrl && <SCardImage src={card.imageUrl} alt={card.meaning} />}
           {(onEdit || onDelete) && (
             <SCardActions>
               {onEdit && (

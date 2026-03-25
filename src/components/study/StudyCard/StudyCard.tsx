@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import {
   SBack,
   SBadgePosition,
+  SCardImage,
   SDetail,
   SFlashcard,
   SFlashcardInner,
@@ -115,6 +116,7 @@ export function StudyView() {
               <SMeaning $fontSize='1.6rem'>{currentCard.meaning}</SMeaning>
               {currentCard.example && <SDetail>{currentCard.example}</SDetail>}
               {currentCard.note && <SDetail>{currentCard.note}</SDetail>}
+              {currentCard.imageUrl && <SCardImage src={currentCard.imageUrl} alt={currentCard.meaning} />}
             </SBack>
           </SFlashcardInner>
         </SFlashcard>

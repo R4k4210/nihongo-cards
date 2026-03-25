@@ -1,11 +1,69 @@
 import { nanoid } from 'nanoid';
-import { Card } from '~/types';
+import Papa from 'papaparse';
+import { Card, CARD_TYPES, CardType } from '~/types';
+
+export interface BatchParseResult {
+  line: number;
+  status: 'ok' | 'error';
+  card?: Partial<Card>;
+  message?: string;
+}
 
 export class ImportService {
   parseJsonFile(content: string): Partial<Card>[] {
     const parsed = JSON.parse(content);
     if (!Array.isArray(parsed)) throw new Error('Formato inválido: se esperaba un array');
     return parsed;
+  }
+
+  // Field order: kanji ; furigana ; type ; meaning ; imageUrl ; example ; note ; tags
+  // Mandatory: kanji, furigana, type, meaning (positions 1-4)
+  // Optional: imageUrl, example, note, tags (positions 5-8) — can be empty or omitted
+  parseBatchCsv(text: string): BatchParseResult[] {
+    const { data } = Papa.parse<string[]>(text, {
+      delimiter: ';',
+      skipEmptyLines: true,
+    });
+
+    return data.map((row, index) => {
+      const fields = row.map((f) => f.trim());
+
+      if (fields.length < 4) {
+        return {
+          line: index + 1,
+          status: 'error' as const,
+          message: 'Mínimo 4 campos obligatorios: kanji ; furigana ; tipo ; significado',
+        };
+      }
+
+      const [kanji, furigana, type, meaning, imageUrl, example, note, tags] = fields;
+
+      if (!kanji || !furigana || !type || !meaning) {
+        return {
+          line: index + 1,
+          status: 'error' as const,
+          message: 'Los campos kanji, furigana, tipo y significado no pueden estar vacíos',
+        };
+      }
+
+      const card: Partial<Card> = {
+        kanji,
+        furigana,
+        type: this.parseType(type),
+        meaning,
+        imageUrl: imageUrl || undefined,
+        example: example || undefined,
+        note: note || undefined,
+        tags: tags
+          ? tags
+              .split(',')
+              .map((t) => t.trim().toLowerCase())
+              .filter(Boolean)
+          : [],
+      };
+
+      return { line: index + 1, status: 'ok' as const, card };
+    });
   }
 
   mergeCards(existing: Card[], incoming: Partial<Card>[]): { cards: Card[]; count: number } {
@@ -31,6 +89,12 @@ export class ImportService {
       });
 
     return { cards: [...existing, ...newCards], count };
+  }
+
+  private parseType(value: string): CardType {
+    const normalized = value.toLowerCase().trim();
+    if (CARD_TYPES.includes(normalized as CardType)) return normalized as CardType;
+    return 'otro';
   }
 }
 

@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import { Card, CreateCardInput } from '~/types';
+import { normalizeImageUrl } from '~/utils/images';
 
 export class CardService {
   createCard(input: CreateCardInput): Card {
@@ -12,6 +13,7 @@ export class CardService {
       meaning: input.meaning.trim(),
       example: input.example?.trim() || undefined,
       note: input.note?.trim() || undefined,
+      imageUrl: normalizeImageUrl(input.imageUrl || '') || undefined,
       tags: input.tags ?? [],
       createdAt: now,
       updatedAt: now,

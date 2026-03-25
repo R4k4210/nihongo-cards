@@ -65,6 +65,13 @@ export const SDetail = styled.div`
   text-align: center;
 `;
 
+export const SCardImage = styled.img`
+  max-width: 80%;
+  max-height: 80px;
+  object-fit: contain;
+  border-radius: 8px;
+`;
+
 export const SFlipHint = styled.span`
   position: absolute;
   bottom: 0.75rem;

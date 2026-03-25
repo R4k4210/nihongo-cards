@@ -1,9 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Button, Modal, SFormGroup, SInput, SLabel, SModalActions, SSelect } from '~/components/common';
+import {
+  Button,
+  Modal,
+  SFormGroup,
+  SInput,
+  SLabel,
+  SModalActions,
+  SSelect,
+  STextarea,
+  TagInput,
+} from '~/components/common';
 import { CARD_TYPE_CONFIG } from '~/constants';
 import { CARD_TYPES, Card, CardType } from '~/types';
+import { normalizeImageUrl } from '~/utils/images';
 
 interface EditCardModalProps {
   card: Card | null;
@@ -19,6 +30,8 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
   const [meaning, setMeaning] = useState('');
   const [example, setExample] = useState('');
   const [note, setNote] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
     if (card) {
@@ -28,6 +41,8 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
       setMeaning(card.meaning);
       setExample(card.example || '');
       setNote(card.note || '');
+      setImageUrl(card.imageUrl || '');
+      setTags(card.tags || []);
     }
   }, [card]);
 
@@ -40,6 +55,8 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
       meaning: meaning.trim(),
       example: example.trim() || undefined,
       note: note.trim() || undefined,
+      imageUrl: normalizeImageUrl(imageUrl) || undefined,
+      tags,
     });
     onClose();
   };
@@ -69,17 +86,32 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
         <SLabel htmlFor='edit-meaning'>Significado</SLabel>
-        <SInput id='edit-meaning' value={meaning} onChange={(e) => setMeaning(e.target.value)} />
+        <STextarea id='edit-meaning' value={meaning} onChange={(e) => setMeaning(e.target.value)} rows={2} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
         <SLabel htmlFor='edit-example'>Ejemplo</SLabel>
-        <SInput id='edit-example' value={example} onChange={(e) => setExample(e.target.value)} />
+        <STextarea id='edit-example' value={example} onChange={(e) => setExample(e.target.value)} rows={2} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
         <SLabel htmlFor='edit-note'>Nota</SLabel>
-        <SInput id='edit-note' value={note} onChange={(e) => setNote(e.target.value)} />
+        <STextarea id='edit-note' value={note} onChange={(e) => setNote(e.target.value)} rows={2} />
+      </SFormGroup>
+
+      <SFormGroup style={{ marginBottom: '1rem' }}>
+        <SLabel>Tags</SLabel>
+        <TagInput tags={tags} onChange={setTags} />
+      </SFormGroup>
+
+      <SFormGroup style={{ marginBottom: '1rem' }}>
+        <SLabel htmlFor='edit-image'>Imagen URL</SLabel>
+        <SInput
+          id='edit-image'
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+          placeholder='https://i.imgur.com/...'
+        />
       </SFormGroup>
 
       <SModalActions>

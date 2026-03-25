@@ -1,10 +1,23 @@
 'use client';
 
-import { Button, SFormGroup, SHint, SInput, SLabel, SSelect, TypeBadge } from '~/components/common';
+import { useMemo } from 'react';
+import Image from 'next/image';
+import {
+  Button,
+  SFormGroup,
+  SHint,
+  SInput,
+  SLabel,
+  SSelect,
+  STextarea,
+  TagInput,
+  TypeBadge,
+} from '~/components/common';
 import { RubyText } from '~/components/ruby';
 import { CARD_TYPE_CONFIG } from '~/constants';
 import { useCardForm } from '~/hooks/useCardForm';
 import { CARD_TYPES, CardType, CreateCardInput } from '~/types';
+import { normalizeImageUrl } from '~/utils/images';
 import {
   SFuriganaHelper,
   SFuriganaHelperTitle,
@@ -45,6 +58,7 @@ export function CardForm({
   };
 
   const showFuriganaHelper = form.kanji.trim() && form.furigana.trim();
+  const normalizedImageUrl = useMemo(() => normalizeImageUrl(form.imageUrl || ''), [form.imageUrl]);
 
   return (
     <SSection>
@@ -98,33 +112,55 @@ export function CardForm({
             value={form.meaning}
             onChange={(e) => updateField('meaning', e.target.value)}
             placeholder='Presentación, introducción'
-            maxLength={100}
+            maxLength={200}
           />
           <SHint>Traducción o significado</SHint>
+        </SFormGroup>
+      </SFormGrid>
+
+      <SFormGrid>
+        <SFormGroup>
+          <SLabel htmlFor='input-image'>Imagen URL (opcional)</SLabel>
+          <SInput
+            id='input-image'
+            value={form.imageUrl || ''}
+            onChange={(e) => updateField('imageUrl', e.target.value)}
+            placeholder='https://ejemplo.com/imagen.png'
+            maxLength={500}
+          />
+          <SHint>Pega el link de la imagen</SHint>
         </SFormGroup>
 
         <SFormGroup>
           <SLabel htmlFor='input-example'>Ejemplo (opcional)</SLabel>
-          <SInput
+          <STextarea
             id='input-example'
             value={form.example || ''}
             onChange={(e) => updateField('example', e.target.value)}
             placeholder='自己紹介をする'
-            maxLength={100}
+            maxLength={200}
+            rows={2}
           />
           <SHint>Oración de ejemplo</SHint>
         </SFormGroup>
 
         <SFormGroup>
           <SLabel htmlFor='input-note'>Nota (opcional)</SLabel>
-          <SInput
+          <STextarea
             id='input-note'
             value={form.note || ''}
             onChange={(e) => updateField('note', e.target.value)}
             placeholder='JLPT N4'
-            maxLength={100}
+            maxLength={200}
+            rows={2}
           />
           <SHint>Info adicional</SHint>
+        </SFormGroup>
+
+        <SFormGroup>
+          <SLabel>Tags (opcional)</SLabel>
+          <TagInput tags={form.tags || []} onChange={(tags) => updateField('tags', tags)} />
+          <SHint>Presioná Enter o coma para agregar un tag</SHint>
         </SFormGroup>
       </SFormGrid>
 
@@ -152,9 +188,6 @@ export function CardForm({
           <SPreviewCard $variant='front'>
             <SPreviewLabel>Front (pregunta)</SPreviewLabel>
             <SPreviewBox $variant='front'>
-              <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
-                <TypeBadge type={form.type} />
-              </div>
               <span
                 style={{
                   fontFamily: "'Noto Sans JP', sans-serif",
@@ -182,6 +215,16 @@ export function CardForm({
               )}
               {form.note && (
                 <div style={{ fontSize: '0.8rem', color: '#6c6c7e', textAlign: 'center' }}>{form.note}</div>
+              )}
+              {normalizedImageUrl && (
+                <Image
+                  src={normalizedImageUrl}
+                  alt='Preview'
+                  width={120}
+                  height={60}
+                  style={{ objectFit: 'contain', borderRadius: '8px' }}
+                  unoptimized
+                />
               )}
             </SPreviewBox>
           </SPreviewCard>

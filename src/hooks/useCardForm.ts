@@ -10,6 +10,7 @@ const initialState: CreateCardInput = {
   meaning: '',
   example: '',
   note: '',
+  imageUrl: '',
   tags: [],
 };
 

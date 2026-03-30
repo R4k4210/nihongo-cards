@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
 import { Button } from '~/components/common';
 import { importService } from '~/services/ImportService';
@@ -26,6 +27,9 @@ const PLACEHOLDER = `紹介 ; しょう,かい ; sustantivo ; Presentación ;;;;
 猫 ; ねこ ; sustantivo ; Gato ; ; 猫が好きです ; JLPT N5 ; animales,n5`;
 
 export function BatchImport() {
+  const t = useTranslations('batchImport');
+  const tImportExport = useTranslations('importExport');
+  const tValidation = useTranslations('validation');
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState('');
   const { cards, setCards } = useCardsStore();
@@ -41,12 +45,12 @@ export function BatchImport() {
   const handleImport = () => {
     const validCards = results.filter((r) => r.status === 'ok' && r.card).map((r) => r.card!);
     if (validCards.length === 0) {
-      toast.error('No hay cards válidas para importar');
+      toast.error(t('noValidCards'));
       return;
     }
     const result = importService.mergeCards(cards, validCards);
     setCards(result.cards);
-    toast.success(`${result.count} cards importadas`);
+    toast.success(tImportExport('cardsImported', { count: result.count }));
     setText('');
   };
 
@@ -54,8 +58,8 @@ export function BatchImport() {
     <SSection>
       <SHeader type='button' onClick={() => setIsOpen((o) => !o)}>
         <SHeaderLeft>
-          <STitle>Importar en lote</STitle>
-          <SDescription>Importá varias cards de una vez pegando texto</SDescription>
+          <STitle>{t('title')}</STitle>
+          <SDescription>{t('description')}</SDescription>
         </SHeaderLeft>
         <SChevron $open={isOpen}>▼</SChevron>
       </SHeader>
@@ -63,22 +67,21 @@ export function BatchImport() {
       {isOpen && (
         <SContent>
           <SFormatHint>
-            <strong>Formato:</strong>
+            <strong>{t('formatLabel')}</strong>
             <br />
-            <code>kanji ; furigana ; tipo ; significado ; imagenUrl ; ejemplo ; nota ; tags</code>
-            <br />
-            <br />
-            <strong>Obligatorios:</strong> kanji, furigana, tipo, significado
-            <br />
-            <strong>Opcionales:</strong> imagenUrl, ejemplo, nota, tags — podés dejarlos vacíos o no incluirlos
+            <code>{t('formatCode')}</code>
             <br />
             <br />
-            <strong>Tipos válidos:</strong>{' '}
-            <code>sustantivo, verbo, adjetivo-i, adjetivo-na, adverbio, expresion, particula, contador, otro</code>
+            <strong>{t('required')}</strong>
             <br />
-            <strong>Tags:</strong> separados por coma: <code>jlpt-n4,saludos</code>
+            <strong>{t('optional')}</strong>
             <br />
-            <strong>Furigana:</strong> separado por coma: <code>しょう,かい</code>
+            <br />
+            <strong>{t('validTypes')}</strong> <code>{t('typesList')}</code>
+            <br />
+            <strong>{t('tagsHint')}</strong>
+            <br />
+            <strong>{t('furiganaHint')}</strong>
           </SFormatHint>
 
           <STextarea placeholder={PLACEHOLDER} value={text} onChange={(e) => setText(e.target.value)} />
@@ -95,20 +98,29 @@ export function BatchImport() {
                         {r.card.tags && r.card.tags.length > 0 && ` [${r.card.tags.join(', ')}]`}
                       </span>
                     )}
-                    {r.status === 'error' && <span>{r.message}</span>}
+                    {r.status === 'error' && (
+                      <span>
+                        {r.message === 'MIN_FIELDS'
+                          ? tValidation('minFields')
+                          : r.message === 'EMPTY_REQUIRED'
+                            ? tValidation('emptyRequired')
+                            : r.message}
+                      </span>
+                    )}
                   </SPreviewItem>
                 ))}
               </SPreviewList>
 
               <SActions>
                 <Button onClick={handleImport} disabled={okCount === 0}>
-                  Importar {okCount} cards
+                  {t('importCount', { count: okCount })}
                 </Button>
                 <Button variant='secondary' onClick={() => setText('')}>
-                  Limpiar
+                  {t('clear')}
                 </Button>
                 <SCount>
-                  {okCount} válidas{errorCount > 0 && `, ${errorCount} con errores`}
+                  {t('valid', { count: okCount })}
+                  {errorCount > 0 && `, ${t('withErrors', { count: errorCount })}`}
                 </SCount>
               </SActions>
             </>

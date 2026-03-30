@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
 import { Button } from '~/components/common';
 import { exportService } from '~/services/ExportService';
@@ -9,16 +10,17 @@ import { useCardsStore } from '~/store/cardsStore';
 import { SActions, SHiddenInput, SSection, STitle } from './ImportExport.styles';
 
 export function ImportExport() {
+  const t = useTranslations('importExport');
   const { cards, setCards, clearAll } = useCardsStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleExport = () => {
     if (cards.length === 0) {
-      toast.error('No hay cards para exportar');
+      toast.error(t('noCardsToExport'));
       return;
     }
     exportService.exportAndDownload(cards);
-    toast.success(`${cards.length} cards exportadas`);
+    toast.success(t('cardsExported', { count: cards.length }));
   };
 
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,9 +34,9 @@ export function ImportExport() {
         const incoming = importService.parseJsonFile(content);
         const result = importService.mergeCards(cards, incoming);
         setCards(result.cards);
-        toast.success(`${result.count} cards importadas`);
+        toast.success(t('cardsImported', { count: result.count }));
       } catch {
-        toast.error('Error al importar: formato inválido');
+        toast.error(t('importError'));
       }
     };
     reader.readAsText(file);
@@ -43,34 +45,29 @@ export function ImportExport() {
 
   const handleClearAll = () => {
     if (cards.length === 0) {
-      toast('No hay cards para borrar');
+      toast(t('noCardsToDelete'));
       return;
     }
-    if (
-      window.confirm(`¿Seguro que querés borrar TODAS las ${cards.length} cards? Esta acción no se puede deshacer.`)
-    ) {
+    if (window.confirm(t('confirmDelete', { count: cards.length }))) {
       clearAll();
-      toast.success('Todas las cards fueron eliminadas');
+      toast.success(t('allDeleted'));
     }
   };
 
   return (
     <SSection>
-      <STitle>Respaldo de datos</STitle>
-      <p style={{ color: '#6c6c7e', fontSize: '0.875rem', marginBottom: '1rem' }}>
-        Tus cards se guardan en el navegador. Si borrás los datos del navegador, se pierden. Hacé un respaldo para no
-        perderlas.
-      </p>
+      <STitle>{t('title')}</STitle>
+      <p style={{ color: '#6c6c7e', fontSize: '0.875rem', marginBottom: '1rem' }}>{t('description')}</p>
       <SActions>
         <Button variant='secondary' onClick={handleExport}>
-          Descargar respaldo
+          {t('download')}
         </Button>
         <Button variant='secondary' onClick={() => fileInputRef.current?.click()}>
-          Restaurar respaldo
+          {t('restore')}
         </Button>
         <SHiddenInput ref={fileInputRef} type='file' accept='.json' onChange={handleImport} />
         <Button variant='danger' onClick={handleClearAll}>
-          Borrar todo
+          {t('deleteAll')}
         </Button>
       </SActions>
     </SSection>

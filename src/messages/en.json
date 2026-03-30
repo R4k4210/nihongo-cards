@@ -1,0 +1,163 @@
+{
+  "nav": {
+    "create": "Create",
+    "collection": "Collection",
+    "study": "Study",
+    "settings": "Settings"
+  },
+  "header": {
+    "subtitle": "Japanese Flashcards",
+    "totalCards": "total cards",
+    "types": "types"
+  },
+  "metadata": {
+    "title": "NihongoCards - Japanese Flashcards",
+    "description": "Flashcard app for learning Japanese vocabulary with furigana"
+  },
+  "cards": {
+    "myCollection": "My Collection",
+    "searchPlaceholder": "Search by kanji, furigana or meaning...",
+    "filterAll": "All",
+    "noCardsYet": "No cards yet",
+    "noResults": "No results",
+    "createFirst": "Create your first flashcard in the Create tab",
+    "tryOtherFilters": "Try other search terms or filters",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteTag": "Remove tag {tag}",
+    "clickToFlip": "click to flip"
+  },
+  "cardTypes": {
+    "sustantivo": {
+      "label": "名詞 Noun",
+      "shortLabel": "Noun",
+      "filterLabel": "名 Noun"
+    },
+    "verbo": {
+      "label": "動詞 Verb",
+      "shortLabel": "Verb",
+      "filterLabel": "動 Verb"
+    },
+    "adjetivo-i": {
+      "label": "い形容詞 i-Adjective",
+      "shortLabel": "i-Adj",
+      "filterLabel": "い i-Adj"
+    },
+    "adjetivo-na": {
+      "label": "な形容詞 na-Adjective",
+      "shortLabel": "na-Adj",
+      "filterLabel": "な na-Adj"
+    },
+    "adverbio": {
+      "label": "副詞 Adverb",
+      "shortLabel": "Adverb",
+      "filterLabel": "副 Adverb"
+    },
+    "expresion": {
+      "label": "表現 Expression",
+      "shortLabel": "Expression",
+      "filterLabel": "表 Expression"
+    },
+    "particula": {
+      "label": "助詞 Particle",
+      "shortLabel": "Particle",
+      "filterLabel": "助 Particle"
+    },
+    "contador": {
+      "label": "助数詞 Counter",
+      "shortLabel": "Counter",
+      "filterLabel": "数 Counter"
+    },
+    "otro": {
+      "label": "その他 Other",
+      "shortLabel": "Other",
+      "filterLabel": "他 Other"
+    }
+  },
+  "cardForm": {
+    "title": "New Flashcard",
+    "subtitle": "Fill in the fields to create a new vocabulary card",
+    "kanjiLabel": "漢字 Kanji / Word",
+    "kanjiHint": "Kanji or main writing",
+    "furiganaLabel": "ふりがな Furigana",
+    "furiganaHint": "Use <strong>,</strong> to separate by kanji. E.g.: しょう,かい",
+    "typeLabel": "Type",
+    "meaningLabel": "Meaning",
+    "meaningHint": "Translation or meaning",
+    "imageLabel": "Image URL (optional)",
+    "imageHint": "Paste the image link",
+    "imagePlaceholder": "https://example.com/image.png",
+    "exampleLabel": "Example (optional)",
+    "exampleHint": "Example sentence",
+    "noteLabel": "Note (optional)",
+    "noteHint": "Additional info",
+    "tagsLabel": "Tags (optional)",
+    "tagsHint": "Press Enter or comma to add a tag",
+    "tagPlaceholder": "Type a tag and press Enter",
+    "furiganaPreview": "Furigana preview",
+    "previewTitle": "Preview (Front → kanji only | Back → everything)",
+    "frontLabel": "Front (question)",
+    "backLabel": "Back (answer)",
+    "meaningPlaceholder": "Meaning",
+    "addCard": "Add Card",
+    "clear": "Clear"
+  },
+  "editModal": {
+    "title": "Edit Card",
+    "furiganaLabel": "ふりがな Furigana (use , to separate)",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "study": {
+    "noCards": "No cards to study",
+    "createFirst": "Create some flashcards first",
+    "completed": "Review complete!",
+    "reviewedCards": "You reviewed {count} cards",
+    "anotherRound": "Another round",
+    "viewCollection": "View Collection",
+    "of": "of",
+    "flipHint": "click or space to flip",
+    "previous": "⬅️ Previous",
+    "next": "Next ➡️"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Backup and data configuration"
+  },
+  "importExport": {
+    "title": "Data Backup",
+    "description": "Your cards are saved in the browser. If you clear browser data, they will be lost. Make a backup to keep them safe.",
+    "download": "Download backup",
+    "restore": "Restore backup",
+    "deleteAll": "Delete all",
+    "noCardsToExport": "No cards to export",
+    "cardsExported": "{count} cards exported",
+    "cardsImported": "{count} cards imported",
+    "importError": "Import error: invalid format",
+    "noCardsToDelete": "No cards to delete",
+    "confirmDelete": "Are you sure you want to delete ALL {count} cards? This action cannot be undone.",
+    "allDeleted": "All cards have been deleted"
+  },
+  "batchImport": {
+    "title": "Batch Import",
+    "description": "Import multiple cards at once by pasting text",
+    "formatLabel": "Format:",
+    "formatCode": "kanji ; furigana ; type ; meaning ; imageUrl ; example ; note ; tags",
+    "required": "Required: kanji, furigana, type, meaning",
+    "optional": "Optional: imageUrl, example, note, tags — you can leave them empty or omit them",
+    "validTypes": "Valid types:",
+    "typesList": "sustantivo, verbo, adjetivo-i, adjetivo-na, adverbio, expresion, particula, contador, otro",
+    "tagsHint": "Tags: comma-separated: jlpt-n4,greetings",
+    "furiganaHint": "Furigana: comma-separated: しょう,かい",
+    "noValidCards": "No valid cards to import",
+    "importCount": "Import {count} cards",
+    "clear": "Clear",
+    "valid": "{count} valid",
+    "withErrors": "{count} with errors"
+  },
+  "validation": {
+    "minFields": "Minimum 4 required fields: kanji ; furigana ; type ; meaning",
+    "emptyRequired": "The fields kanji, furigana, type and meaning cannot be empty",
+    "invalidFormat": "Invalid format: expected an array"
+  }
+}

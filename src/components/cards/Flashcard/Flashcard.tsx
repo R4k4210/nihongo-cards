@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { TypeBadge } from '~/components/common';
 import { RubyText } from '~/components/ruby';
 import { Card } from '~/types';
@@ -26,6 +27,7 @@ interface FlashcardProps {
 }
 
 export function Flashcard({ card, onEdit, onDelete }: FlashcardProps) {
+  const t = useTranslations('cards');
   const [flipped, setFlipped] = useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
@@ -41,16 +43,16 @@ export function Flashcard({ card, onEdit, onDelete }: FlashcardProps) {
             <TypeBadge type={card.type} />
           </SBadgePosition>
           <SKanjiDisplay>{card.kanji}</SKanjiDisplay>
-          <SFlipHint>click para voltear</SFlipHint>
+          <SFlipHint>{t('clickToFlip')}</SFlipHint>
           {(onEdit || onDelete) && (
             <SCardActions>
               {onEdit && (
-                <SActionBtn onClick={() => onEdit(card.id)} aria-label='Editar'>
+                <SActionBtn onClick={() => onEdit(card.id)} aria-label={t('edit')}>
                   ✏️
                 </SActionBtn>
               )}
               {onDelete && (
-                <SActionBtn $danger onClick={() => onDelete(card.id)} aria-label='Eliminar'>
+                <SActionBtn $danger onClick={() => onDelete(card.id)} aria-label={t('delete')}>
                   🗑️
                 </SActionBtn>
               )}
@@ -69,12 +71,12 @@ export function Flashcard({ card, onEdit, onDelete }: FlashcardProps) {
           {(onEdit || onDelete) && (
             <SCardActions>
               {onEdit && (
-                <SActionBtn onClick={() => onEdit(card.id)} aria-label='Editar'>
+                <SActionBtn onClick={() => onEdit(card.id)} aria-label={t('edit')}>
                   ✏️
                 </SActionBtn>
               )}
               {onDelete && (
-                <SActionBtn $danger onClick={() => onDelete(card.id)} aria-label='Eliminar'>
+                <SActionBtn $danger onClick={() => onDelete(card.id)} aria-label={t('delete')}>
                   🗑️
                 </SActionBtn>
               )}

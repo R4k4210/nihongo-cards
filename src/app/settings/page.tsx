@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 import { ImportExport } from '~/components/import-export';
 import { AppShell } from '~/components/layout/AppShell';
@@ -16,10 +17,12 @@ const SPageSubtitle = styled.p`
 `;
 
 export default function SettingsPage() {
+  const t = useTranslations('settings');
+
   return (
     <AppShell>
-      <SPageTitle>Ajustes</SPageTitle>
-      <SPageSubtitle>Respaldo y configuración de tus datos</SPageSubtitle>
+      <SPageTitle>{t('title')}</SPageTitle>
+      <SPageSubtitle>{t('subtitle')}</SPageSubtitle>
       <ImportExport />
     </AppShell>
   );

@@ -12,6 +12,27 @@ export const SNav = styled.nav`
   }
 `;
 
+export const SLangButton = styled.button`
+  padding: 0.4rem 0.6rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.bgCard};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.accent};
+    color: ${({ theme }) => theme.colors.textPrimary};
+    background: ${({ theme }) => theme.colors.bgCardHover};
+  }
+`;
+
 export const SSettingsButton = styled.button<{ $active?: boolean }>`
   padding: 0.6rem 0.6rem 0.6rem 0.2rem;
   border: none;

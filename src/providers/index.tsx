@@ -1,13 +1,16 @@
 'use client';
 
+import { IntlProvider } from './IntlProvider';
 import { StyledProvider } from './StyledProvider';
 import { ToastProvider } from './ToastProvider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <StyledProvider>
-      {children}
-      <ToastProvider />
+      <IntlProvider>
+        {children}
+        <ToastProvider />
+      </IntlProvider>
     </StyledProvider>
   );
 }

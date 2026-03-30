@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { Providers } from '~/providers';
 
 export const metadata: Metadata = {
-  title: 'NihongoCards - Flashcards de Japonés',
-  description: 'Aplicación de flashcards para aprender vocabulario japonés con furigana',
+  title: 'NihongoCards',
+  description: 'Flashcard app for learning Japanese vocabulary with furigana',
   icons: {
     icon: '/favicon.ico',
   },
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='es'>
+    <html lang='es' suppressHydrationWarning>
       <body>
         <Providers>{children}</Providers>
       </body>

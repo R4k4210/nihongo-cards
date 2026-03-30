@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   SBack,
   SBadgePosition,
@@ -32,6 +34,8 @@ import {
 } from './StudyCard.styles';
 
 export function StudyView() {
+  const t = useTranslations('study');
+  const router = useRouter();
   const {
     session,
     currentCard,
@@ -60,8 +64,8 @@ export function StudyView() {
       <SStudyContainer>
         <SEmptyStudy>
           <SEmptyIcon>📭</SEmptyIcon>
-          <SEmptyTitle>No hay cards para estudiar</SEmptyTitle>
-          <SEmptyText>Creá algunas flashcards primero</SEmptyText>
+          <SEmptyTitle>{t('noCards')}</SEmptyTitle>
+          <SEmptyText>{t('createFirst')}</SEmptyText>
         </SEmptyStudy>
       </SStudyContainer>
     );
@@ -72,12 +76,12 @@ export function StudyView() {
       <SStudyContainer>
         <SEmptyStudy>
           <SEmptyIcon>🎉</SEmptyIcon>
-          <SEmptyTitle>¡Repaso completado!</SEmptyTitle>
-          <SEmptyText>Repasaste {session?.cards.length} cards</SEmptyText>
+          <SEmptyTitle>{t('completed')}</SEmptyTitle>
+          <SEmptyText>{t('reviewedCards', { count: session?.cards.length ?? 0 })}</SEmptyText>
           <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <Button onClick={startSession}>Otra ronda</Button>
-            <Button variant='secondary' onClick={() => (window.location.href = '/cards')}>
-              Ver Colección
+            <Button onClick={startSession}>{t('anotherRound')}</Button>
+            <Button variant='secondary' onClick={() => router.push('/cards')}>
+              {t('viewCollection')}
             </Button>
           </div>
         </SEmptyStudy>
@@ -90,7 +94,7 @@ export function StudyView() {
       {progress && (
         <SProgressWrapper>
           <SProgressText>
-            {progress.current + 1} de {progress.total}
+            {progress.current + 1} {t('of')} {progress.total}
           </SProgressText>
           <SProgressBarContainer>
             <SProgressBar $width={progress.percentage} />
@@ -106,7 +110,7 @@ export function StudyView() {
                 <TypeBadge type={currentCard.type} />
               </SBadgePosition>
               <SKanjiDisplay $fontSize='4.5rem'>{currentCard.kanji}</SKanjiDisplay>
-              <SFlipHint>click o espacio para voltear</SFlipHint>
+              <SFlipHint>{t('flipHint')}</SFlipHint>
             </SFront>
             <SBack>
               <SBadgePosition>
@@ -124,10 +128,10 @@ export function StudyView() {
 
       <SControls>
         <Button variant='secondary' onClick={prevCard} style={{ minWidth: '120px', justifyContent: 'center' }}>
-          ⬅️ Anterior
+          {t('previous')}
         </Button>
         <Button onClick={nextCard} style={{ minWidth: '120px', justifyContent: 'center' }}>
-          Siguiente ➡️
+          {t('next')}
         </Button>
       </SControls>
     </SStudyContainer>

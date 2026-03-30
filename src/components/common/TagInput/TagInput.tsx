@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { SInlineInput, SPill, SPillRemove, STagInputWrapper } from './TagInput.styles';
 
 interface TagInputProps {
@@ -9,7 +10,8 @@ interface TagInputProps {
   placeholder?: string;
 }
 
-export function TagInput({ tags, onChange, placeholder = 'Escribí un tag y presioná Enter' }: TagInputProps) {
+export function TagInput({ tags, onChange, placeholder }: TagInputProps) {
+  const t = useTranslations('cards');
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -39,7 +41,7 @@ export function TagInput({ tags, onChange, placeholder = 'Escribí un tag y pres
       {tags.map((tag, i) => (
         <SPill key={tag}>
           {tag}
-          <SPillRemove type='button' onClick={() => removeTag(i)} aria-label={`Eliminar tag ${tag}`}>
+          <SPillRemove type='button' onClick={() => removeTag(i)} aria-label={t('deleteTag', { tag })}>
             ×
           </SPillRemove>
         </SPill>
@@ -50,7 +52,7 @@ export function TagInput({ tags, onChange, placeholder = 'Escribí un tag y pres
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
         onBlur={() => input && addTag(input)}
-        placeholder={tags.length === 0 ? placeholder : ''}
+        placeholder={tags.length === 0 ? placeholder || '' : ''}
       />
     </STagInputWrapper>
   );

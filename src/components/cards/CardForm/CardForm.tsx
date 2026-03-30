@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import {
   Button,
   SFormGroup,
@@ -14,7 +15,6 @@ import {
   TypeBadge,
 } from '~/components/common';
 import { RubyText } from '~/components/ruby';
-import { CARD_TYPE_CONFIG } from '~/constants';
 import { useCardForm } from '~/hooks/useCardForm';
 import { CARD_TYPES, CardType, CreateCardInput } from '~/types';
 import { normalizeImageUrl } from '~/utils/images';
@@ -42,13 +42,8 @@ interface CardFormProps {
   subtitle?: string;
 }
 
-export function CardForm({
-  onSubmit,
-  defaultValues,
-  submitLabel = 'Agregar Card',
-  title = 'Nueva Flashcard',
-  subtitle = 'Completá los campos para crear una nueva tarjeta de vocabulario',
-}: CardFormProps) {
+export function CardForm({ onSubmit, defaultValues, submitLabel, title, subtitle }: CardFormProps) {
+  const t = useTranslations();
   const { form, updateField, reset, isValid } = useCardForm(defaultValues);
 
   const handleSubmit = () => {
@@ -62,12 +57,12 @@ export function CardForm({
 
   return (
     <SSection>
-      <STitle>{title}</STitle>
-      <SSubtitle>{subtitle}</SSubtitle>
+      <STitle>{title || t('cardForm.title')}</STitle>
+      <SSubtitle>{subtitle || t('cardForm.subtitle')}</SSubtitle>
 
       <SFormGrid>
         <SFormGroup>
-          <SLabel htmlFor='input-kanji'>漢字 Kanji / Palabra</SLabel>
+          <SLabel htmlFor='input-kanji'>{t('cardForm.kanjiLabel')}</SLabel>
           <SInput
             id='input-kanji'
             $large
@@ -76,11 +71,11 @@ export function CardForm({
             placeholder='紹介'
             maxLength={20}
           />
-          <SHint>Kanji o escritura principal</SHint>
+          <SHint>{t('cardForm.kanjiHint')}</SHint>
         </SFormGroup>
 
         <SFormGroup>
-          <SLabel htmlFor='input-furigana'>ふりがな Furigana</SLabel>
+          <SLabel htmlFor='input-furigana'>{t('cardForm.furiganaLabel')}</SLabel>
           <SInput
             id='input-furigana'
             value={form.furigana}
@@ -89,24 +84,22 @@ export function CardForm({
             maxLength={40}
             style={{ fontSize: '1.1rem', textAlign: 'center' }}
           />
-          <SHint>
-            Usá <strong>,</strong> para separar por kanji. Ej: しょう,かい
-          </SHint>
+          <SHint dangerouslySetInnerHTML={{ __html: t('cardForm.furiganaHint') }} />
         </SFormGroup>
 
         <SFormGroup>
-          <SLabel htmlFor='input-type'>Tipo</SLabel>
+          <SLabel htmlFor='input-type'>{t('cardForm.typeLabel')}</SLabel>
           <SSelect id='input-type' value={form.type} onChange={(e) => updateField('type', e.target.value as CardType)}>
             {CARD_TYPES.map((type) => (
               <option key={type} value={type}>
-                {CARD_TYPE_CONFIG[type].label}
+                {t(`cardTypes.${type}.label`)}
               </option>
             ))}
           </SSelect>
         </SFormGroup>
 
         <SFormGroup>
-          <SLabel htmlFor='input-meaning'>Significado</SLabel>
+          <SLabel htmlFor='input-meaning'>{t('cardForm.meaningLabel')}</SLabel>
           <SInput
             id='input-meaning'
             value={form.meaning}
@@ -114,25 +107,25 @@ export function CardForm({
             placeholder='Presentación, introducción'
             maxLength={200}
           />
-          <SHint>Traducción o significado</SHint>
+          <SHint>{t('cardForm.meaningHint')}</SHint>
         </SFormGroup>
       </SFormGrid>
 
       <SFormGrid>
         <SFormGroup>
-          <SLabel htmlFor='input-image'>Imagen URL (opcional)</SLabel>
+          <SLabel htmlFor='input-image'>{t('cardForm.imageLabel')}</SLabel>
           <SInput
             id='input-image'
             value={form.imageUrl || ''}
             onChange={(e) => updateField('imageUrl', e.target.value)}
-            placeholder='https://ejemplo.com/imagen.png'
+            placeholder={t('cardForm.imagePlaceholder')}
             maxLength={500}
           />
-          <SHint>Pega el link de la imagen</SHint>
+          <SHint>{t('cardForm.imageHint')}</SHint>
         </SFormGroup>
 
         <SFormGroup>
-          <SLabel htmlFor='input-example'>Ejemplo (opcional)</SLabel>
+          <SLabel htmlFor='input-example'>{t('cardForm.exampleLabel')}</SLabel>
           <STextarea
             id='input-example'
             value={form.example || ''}
@@ -141,11 +134,11 @@ export function CardForm({
             maxLength={200}
             rows={2}
           />
-          <SHint>Oración de ejemplo</SHint>
+          <SHint>{t('cardForm.exampleHint')}</SHint>
         </SFormGroup>
 
         <SFormGroup>
-          <SLabel htmlFor='input-note'>Nota (opcional)</SLabel>
+          <SLabel htmlFor='input-note'>{t('cardForm.noteLabel')}</SLabel>
           <STextarea
             id='input-note'
             value={form.note || ''}
@@ -154,19 +147,23 @@ export function CardForm({
             maxLength={200}
             rows={2}
           />
-          <SHint>Info adicional</SHint>
+          <SHint>{t('cardForm.noteHint')}</SHint>
         </SFormGroup>
 
         <SFormGroup>
-          <SLabel>Tags (opcional)</SLabel>
-          <TagInput tags={form.tags || []} onChange={(tags) => updateField('tags', tags)} />
-          <SHint>Presioná Enter o coma para agregar un tag</SHint>
+          <SLabel>{t('cardForm.tagsLabel')}</SLabel>
+          <TagInput
+            tags={form.tags || []}
+            onChange={(tags) => updateField('tags', tags)}
+            placeholder={t('cardForm.tagPlaceholder')}
+          />
+          <SHint>{t('cardForm.tagsHint')}</SHint>
         </SFormGroup>
       </SFormGrid>
 
       {showFuriganaHelper && (
         <SFuriganaHelper>
-          <SFuriganaHelperTitle>Vista previa del furigana</SFuriganaHelperTitle>
+          <SFuriganaHelperTitle>{t('cardForm.furiganaPreview')}</SFuriganaHelperTitle>
           <div style={{ textAlign: 'center' }}>
             <RubyText kanji={form.kanji} furigana={form.furigana} fontSize='2.5rem' />
           </div>
@@ -175,18 +172,18 @@ export function CardForm({
 
       <SFormActions>
         <Button onClick={handleSubmit} disabled={!isValid}>
-          {submitLabel}
+          {submitLabel || t('cardForm.addCard')}
         </Button>
         <Button variant='secondary' onClick={reset}>
-          Limpiar
+          {t('cardForm.clear')}
         </Button>
       </SFormActions>
 
       <SPreviewSection>
-        <SPreviewTitle>Vista Previa (Front → solo kanji | Back → todo)</SPreviewTitle>
+        <SPreviewTitle>{t('cardForm.previewTitle')}</SPreviewTitle>
         <SPreviewRow>
           <SPreviewCard $variant='front'>
-            <SPreviewLabel>Front (pregunta)</SPreviewLabel>
+            <SPreviewLabel>{t('cardForm.frontLabel')}</SPreviewLabel>
             <SPreviewBox $variant='front'>
               <span
                 style={{
@@ -201,14 +198,14 @@ export function CardForm({
           </SPreviewCard>
 
           <SPreviewCard $variant='back'>
-            <SPreviewLabel>Back (respuesta)</SPreviewLabel>
+            <SPreviewLabel>{t('cardForm.backLabel')}</SPreviewLabel>
             <SPreviewBox $variant='back'>
               <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
                 <TypeBadge type={form.type} />
               </div>
               <RubyText kanji={form.kanji || '漢字'} furigana={form.furigana} fontSize='2.5rem' />
               <div style={{ fontSize: '1.2rem', fontWeight: 600, textAlign: 'center' }}>
-                {form.meaning || 'Significado'}
+                {form.meaning || t('cardForm.meaningPlaceholder')}
               </div>
               {form.example && (
                 <div style={{ fontSize: '0.8rem', color: '#6c6c7e', textAlign: 'center' }}>{form.example}</div>

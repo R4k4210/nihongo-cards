@@ -12,7 +12,7 @@ export interface BatchParseResult {
 export class ImportService {
   parseJsonFile(content: string): Partial<Card>[] {
     const parsed = JSON.parse(content);
-    if (!Array.isArray(parsed)) throw new Error('Formato inválido: se esperaba un array');
+    if (!Array.isArray(parsed)) throw new Error('INVALID_FORMAT');
     return parsed;
   }
 
@@ -32,7 +32,7 @@ export class ImportService {
         return {
           line: index + 1,
           status: 'error' as const,
-          message: 'Mínimo 4 campos obligatorios: kanji ; furigana ; tipo ; significado',
+          message: 'MIN_FIELDS',
         };
       }
 
@@ -42,7 +42,7 @@ export class ImportService {
         return {
           line: index + 1,
           status: 'error' as const,
-          message: 'Los campos kanji, furigana, tipo y significado no pueden estar vacíos',
+          message: 'EMPTY_REQUIRED',
         };
       }
 

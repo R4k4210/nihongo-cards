@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import styled from 'styled-components';
 import { EditCardModal } from '~/components/cards/EditCardModal';
 import { FlashcardGrid } from '~/components/cards/FlashcardGrid';
@@ -8,7 +9,7 @@ import { AppShell } from '~/components/layout/AppShell';
 import { useCards } from '~/hooks/useCards';
 import { useCardsStore } from '~/store/cardsStore';
 import { useUiStore } from '~/store/uiStore';
-import { CARD_TYPES, Card } from '~/types';
+import { CARD_TYPES, Card, CardType } from '~/types';
 
 const SCardsHeader = styled.div`
   display: flex;
@@ -56,20 +57,8 @@ const SFilterBtn = styled.button<{ $active?: boolean }>`
   }
 `;
 
-const filterLabels: Record<string, string> = {
-  all: 'Todos',
-  sustantivo: '名 Sustantivo',
-  verbo: '動 Verbo',
-  'adjetivo-i': 'い Adj-i',
-  'adjetivo-na': 'な Adj-na',
-  adverbio: '副 Adverbio',
-  expresion: '表 Expresión',
-  particula: '助 Partícula',
-  contador: '数 Contador',
-  otro: '他 Otro',
-};
-
 export default function CardsPage() {
+  const t = useTranslations();
   const { cards, filteredCards, deleteCard, updateCard } = useCards();
   const {
     activeFilter,
@@ -89,15 +78,20 @@ export default function CardsPage() {
     updateCard(id, updates);
   };
 
+  const getFilterLabel = (filter: string): string => {
+    if (filter === 'all') return t('cards.filterAll');
+    return t(`cardTypes.${filter as CardType}.filterLabel`);
+  };
+
   return (
     <AppShell>
       <SCardsHeader>
-        <h2>Mi Colección</h2>
+        <h2>{t('cards.myCollection')}</h2>
       </SCardsHeader>
 
       <SSearchBar>
         <SSearchInput
-          placeholder='Buscar por kanji, furigana o significado...'
+          placeholder={t('cards.searchPlaceholder')}
           value={searchTerm}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
         />
@@ -106,7 +100,7 @@ export default function CardsPage() {
       <SFilterBar>
         {['all', ...CARD_TYPES].map((filter) => (
           <SFilterBtn key={filter} $active={activeFilter === filter} onClick={() => setFilter(filter)}>
-            {filterLabels[filter]}
+            {getFilterLabel(filter)}
           </SFilterBtn>
         ))}
       </SFilterBar>

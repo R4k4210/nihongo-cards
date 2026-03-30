@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Button,
   Modal,
@@ -12,7 +13,6 @@ import {
   STextarea,
   TagInput,
 } from '~/components/common';
-import { CARD_TYPE_CONFIG } from '~/constants';
 import { CARD_TYPES, Card, CardType } from '~/types';
 import { normalizeImageUrl } from '~/utils/images';
 
@@ -24,6 +24,7 @@ interface EditCardModalProps {
 }
 
 export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalProps) {
+  const t = useTranslations();
   const [kanji, setKanji] = useState('');
   const [furigana, setFurigana] = useState('');
   const [type, setType] = useState<CardType>('sustantivo');
@@ -62,50 +63,50 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title='Editar Card'>
+    <Modal isOpen={isOpen} onClose={onClose} title={t('editModal.title')}>
       <SFormGroup style={{ marginBottom: '1rem' }}>
-        <SLabel htmlFor='edit-kanji'>漢字 Kanji</SLabel>
+        <SLabel htmlFor='edit-kanji'>{t('cardForm.kanjiLabel')}</SLabel>
         <SInput id='edit-kanji' $large value={kanji} onChange={(e) => setKanji(e.target.value)} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
-        <SLabel htmlFor='edit-furigana'>ふりがな Furigana (usar , para separar)</SLabel>
+        <SLabel htmlFor='edit-furigana'>{t('editModal.furiganaLabel')}</SLabel>
         <SInput id='edit-furigana' value={furigana} onChange={(e) => setFurigana(e.target.value)} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
-        <SLabel htmlFor='edit-type'>Tipo</SLabel>
+        <SLabel htmlFor='edit-type'>{t('cardForm.typeLabel')}</SLabel>
         <SSelect id='edit-type' value={type} onChange={(e) => setType(e.target.value as CardType)}>
-          {CARD_TYPES.map((t) => (
-            <option key={t} value={t}>
-              {CARD_TYPE_CONFIG[t].label}
+          {CARD_TYPES.map((cardType) => (
+            <option key={cardType} value={cardType}>
+              {t(`cardTypes.${cardType}.label`)}
             </option>
           ))}
         </SSelect>
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
-        <SLabel htmlFor='edit-meaning'>Significado</SLabel>
+        <SLabel htmlFor='edit-meaning'>{t('cardForm.meaningLabel')}</SLabel>
         <STextarea id='edit-meaning' value={meaning} onChange={(e) => setMeaning(e.target.value)} rows={2} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
-        <SLabel htmlFor='edit-example'>Ejemplo</SLabel>
+        <SLabel htmlFor='edit-example'>{t('cardForm.exampleLabel')}</SLabel>
         <STextarea id='edit-example' value={example} onChange={(e) => setExample(e.target.value)} rows={2} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
-        <SLabel htmlFor='edit-note'>Nota</SLabel>
+        <SLabel htmlFor='edit-note'>{t('cardForm.noteLabel')}</SLabel>
         <STextarea id='edit-note' value={note} onChange={(e) => setNote(e.target.value)} rows={2} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
-        <SLabel>Tags</SLabel>
+        <SLabel>{t('cardForm.tagsLabel')}</SLabel>
         <TagInput tags={tags} onChange={setTags} />
       </SFormGroup>
 
       <SFormGroup style={{ marginBottom: '1rem' }}>
-        <SLabel htmlFor='edit-image'>Imagen URL</SLabel>
+        <SLabel htmlFor='edit-image'>{t('cardForm.imageLabel')}</SLabel>
         <SInput
           id='edit-image'
           value={imageUrl}
@@ -116,10 +117,10 @@ export function EditCardModal({ card, isOpen, onClose, onSave }: EditCardModalPr
 
       <SModalActions>
         <Button variant='secondary' onClick={onClose}>
-          Cancelar
+          {t('editModal.cancel')}
         </Button>
         <Button onClick={handleSave} disabled={!kanji.trim() || !meaning.trim()}>
-          Guardar
+          {t('editModal.save')}
         </Button>
       </SModalActions>
     </Modal>
